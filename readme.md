@@ -99,7 +99,20 @@ such a decoder always exists. The entire experiment is also quantified over the
 number of signing queries (we will discuss polynomial-time bounding issues
 later).
 
+Now we will seek to apply this lemma to our protocol execution. First, let's
+separate out all the signing-related parts from the rest of the protocol. In the
+next picture we have the same computation graph as before, laid out suggestively
+using knowledge about the sign-verify lemma.
+
 ![](svg/3-receiver-auth-sign.svg){ width=100% }
+
+The long dashed vertical lines separate the signing part from the rest of the
+protocol. For the purposes of the sign-verify lemma, the rest of the protocol
+may as well be adversarial, and it would still hold. I.e., we fill the universal
+quantifiers in the sign-verify lemma with a combination of the protocol
+execution and the adversary interfering with it. After replacing the left-hand
+side of the sign-verify lemma with the right-hand-side, we arrive at the
+following:
 
 ![](svg/4-receiver-auth-rewritten.svg){ width=100% }
 
