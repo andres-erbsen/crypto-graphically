@@ -117,14 +117,100 @@ following:
 
 ![](svg/4-receiver-auth-rewritten.svg){ width=100% }
 
+The output boolean from the "valid" mux is connexted to the dashed horizontal
+abort-if-false line. If the output is false, the argument that the secret
+message at the end of the protocol is not leaked is trivial: all information
+ever given to the adversary is independent from it. In graph computation terms,
+there is no path from it to the adversary. Therefore, we will focus on the case
+where the bottom output of ∃ makes a mux output its left input: true/"valid" to
+the dashed horizontal line, and a real message instead of a forgery.
+
 ![](svg/5-case.svg){ width=100% }
+
+Now it is obvious that if this execution completes, the adversary may have
+chosen from a glorious set of 1 alternatives for what message to relay to A.
 
 ![](svg/6-invariant.svg){ width=100% }
 
+Of course, a proof specific to a particular execution is underwhelming: for
+example, the adversary may have initiated many sessions with B, pretending to be
+A and C and maybe even B itself. To deal with all of these, we would like to
+establish an invariant about the messages that B signs. In this case, the
+invariant would say that the second component of any message signed by B known
+to the adversary is a valid Diffie-Hellman public key whose secret key is held
+by B and B only. To establish this by induction, we would need to prove that
+every message sent by B does not leak a previously signed Diffie-Hellman key,
+and that every signed message B sends indeed contains such a key.
+
+Just any proof by induction isn't quite satisfactory in this context either.
+Proving the statement "forall number of execution steps n, there exists a
+polynomial time algorithm that in case of any break of this protocol breaks some
+assumption" would construct an algorithm whose running time is polynomial in the
+size of the protocol description, but grows arbitrarily fast with n. For
+example, if the proof invoked the inductive hypothesis for all integers 1..n,
+the total reduction would run in exponential time and be cryptographically
+useless. Nevertheless, I think a proof of the weaker statement that can be
+proven by induction is valuable as a heuristic for real-world security.
+Of course, one could always move the existential out of the induction: specify a
+concrete number of steps, as a function of n, in which the reduction algorithm
+runs, and prove by induction that this is achievable for all n. That seems like
+it would be really painful. Perhaps the best strategy would be to define a
+limited form of induction that only allows running times polynomial in n. Maybe
+restricting the use of the inductive hypothesis to top-level transitivity steps
+could do the trick? (I actually don't know, it might as well just not help at all)
+
+Either way, based on invariant or by inspecting the simple execution shown here,
+we conclude that the message that passed signature verification must indeed
+contain the pair (A', B').
+
 ![](svg/7-shortcircuit.svg){ width=100% }
+
+We are now done reasoning about signatures. Note that while we were able to drop
+the signature verification node from the computation graph because we figured
+out what its output must be, there doesn't seem to be an easy way to drop the
+signing node. I think this is because it is not obvious that something about the
+signature or signing doesn't give adversary extra information that it could use
+to attack the rest of the protocol.
+
+The next step is to show that the shared secret generated from the
+Diffie-Hellman keys is good. To do this, we use the Decision-Diffie-Hellman
+assumption: no polynomial-time adversary can distinguish between (g^x, g^y,
+g^xy) and (g^x, g^, g^z) with random x,y,z. Again, for the purpose of applying
+this axiom, we refactor the protocol execution in a way that groups most of the
+protocol nodes with the adversary. The protocol execution trivially polynomial-time,
+so the DDH assumption applies to the compound adversary we construct this way.
 
 ![](svg/8-rearrange-for-dh.svg){ width=100% }
 
+Replacing the left-hand-side of the DDH assumption with the right-hand-side...
+
 ![](svg/9-ddh.svg){ width=100% }
 
+After applying DDH, we are simply encrypting a message with a random key that
+the adversary does not have any information about. This is a trivial case of any
+encryption confidentiality definition, for example
+[IND-CCA2](https://crypto.graphics/IND-CCA2/). A lemma about ENC would say that
+if a key has only been used for encryption and decryption, and has not been used
+to used to decrypt (and give to the adversary) the very ciphertext in question,
+the adversary cannot tell whether the ciphertext conceals one plaintext or
+another. Therefore, we can just replace the plaintext with a dummy value.
+With this, we have won: there is no more information flow from the secret
+message to the adversary.
+
 ![](svg/99-victory.svg){ width=100% }
+
+I expect that all steps shown here can be automated. I don't know whether there
+is a precise term for the kind of regrouping and pattern-matching I did to apply
+lemmas about crypto primitives, but I think an algorithm for it can reasonably
+be constructed from any algorithm to perform unification on simply typed lambda
+calculus by treating each node as a let binding of a primitive function applied
+to outputs of previous nodes. Of course, this is for doing proofs about protocol
+executions.
+
+To prove something about all executions of a protocol, we will probably need
+many of the same tricks as for reasoning about message-passing programs in the
+absence of cryptography. I hope replacing reasoning about values with reasoning
+about probabilistic computations will cause issues, but eh, I haven't tried.
+Even with these tricks, there would be no general rule for coming up with
+invariants to prove by induction, but it I hope it would be possible to prove an
+invariant using the same techniques as I showed here for a single execution.
