@@ -1,3 +1,5 @@
+*For the same images in slide form, see [here](slides.html).*
+
 I experimented some with representing cryptographic computations and
 protocols graphically, with notation similar to electrical engineering
 or digital signal processing circuits. This example will walk through

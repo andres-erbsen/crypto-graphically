@@ -1,0 +1,52 @@
+<!doctype html>
+
+<!-- Using https://github.com/leemark/better-simple-slideshow -->
+
+<!--
+
+
+  <figure><img src="0-legend.svg"/></figure>
+  <figure><img src="2-sign.svg"/></figure>
+  <figure><img src="1-receiver-auth.svg"/></figure>
+  <figure><img src="3-receiver-auth-sign.svg"/></figure>
+  <figure><img src="4-receiver-auth-rewritten.svg"/></figure>
+  <figure><img src="5-case.svg"/></figure>
+  <figure><img src="6-invariant.svg"/></figure>
+  <figure><img src="7-shortcircuit.svg"/></figure>
+  <figure><img src="8-rearrange-for-dh.svg"/></figure>
+  <figure><img src="99-victory.svg"/></figure>
+  <figure><img src="9-ddh.svg"/></figure>
+
+-->
+
+<html>
+  <head>
+    <link href="simple-slideshow-styles.css" type="text/css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="bss-slides slideshow-holder">
+      <figure><img src="svg/0-legend.svg"/></figure>
+      <figure><img src="svg/2-sign.svg"/></figure>
+      <figure><img src="svg/1-receiver-auth.svg"/></figure>
+      <figure><img src="svg/3-receiver-auth-sign.svg"/></figure>
+      <figure><img src="svg/4-receiver-auth-rewritten.svg"/></figure>
+      <figure><img src="svg/5-case.svg"/></figure>
+      <figure><img src="svg/6-invariant.svg"/></figure>
+      <figure><img src="svg/7-shortcircuit.svg"/></figure>
+      <figure><img src="svg/8-rearrange-for-dh.svg"/></figure>
+      <figure><img src="svg/99-victory.svg"/></figure>
+      <figure><img src="svg/9-ddh.svg"/></figure>
+    </div>
+    <script src="better-simple-slideshow.js"></script>
+  <script>
+        var opts = {
+          auto : false,
+          fullScreen : false,
+          swipe : false
+        };
+
+      makeBSS('.slideshow-holder', opts);
+      document.querySelectorAll(".slideshow-holder")[0].focus();
+    </script>
+  </body>
+</html>
