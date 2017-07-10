@@ -65,7 +65,39 @@ In arrows-and-messages notation, this protocol might be described as follows:
 
 ![](svg/1-receiver-auth.svg){ width=100% }
 
+Now, how are we going to establish that this protocol indeed provides
+confidentiality for the message? We will use standard computational game-based
+security definitions (e.g., [https://crypto.graphics/signature/](EUF-CMA)).
+However, we are going to *first* transcribe the security definitions to
+circuit format. This would be trivial for a two-worlds-style security definition
+that completely characterizes the behavior of the primitive in question.
+Single-experiment definitions need to be converted to two-worlds style first,
+and then existentially quantified over behavior in the undefined cases.
+For signatures, we get the following computation indistinguishability statement:
+if a secret key has been only used for signing, and verify with the
+corresponding public key returns "valid", the message must be one of the ones
+signed with that key.  Of course, if verify returns "invalid", the message from
+the adversary may be anything at all. Either way, we do not get any guarantees
+about the contents of the signature.
+
 ![](svg/2-sign.svg){ width=100% }
+
+The choice between which side of the adversary the signing and verification are
+drawn does not have semantic significance. However, it is best to stop and think
+about the quantifiers in this statement for a moment. The adversary represents
+universal quantification: the two sides must be indistinguishable for any
+polynomial-time (in the implicit security parameter) probabilistic program run
+in the cloud. Furthermore, the adversary is the same on the left and on the
+right -- and it must behave the same as it cannot tell which side is executed.
+However, the behavior of the simplified model on the right is just hidden
+convenience: the function marked with ∃ figures out whether the adversary
+returned a forgery or a previously signed message, and sets the select inputs to
+the muxes accordingly. In principle, that definition could have been inlined to
+the lemma statement, but it would not have been useful for anything and would
+have cluttered the display. Thus, we shall be satisfied with just the fact that
+such a decoder always exists. The entire experiment is also quantified over the
+number of signing queries (we will discuss polynomial-time bounding issues
+later).
 
 ![](svg/3-receiver-auth-sign.svg){ width=100% }
 
