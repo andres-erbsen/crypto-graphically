@@ -2,7 +2,7 @@ I experimented some with representing cryptographic computations and
 protocols graphically, with notation similar to electrical engineering
 or digital signal processing circuits. This example will walk through
 one execution of a simple one-way-authenticated key exchange protocol
-and demonste that an execution of this form preserves confidenciality.
+and demonstrate that an execution of this form preserves confidentiality.
 
 First, here is the (completely arbitrary) notation I will be using in
 the diagrams.
@@ -14,7 +14,7 @@ the diagrams.
 - I to use The Cloud to represent to adversary. If you prefer, imagine
   that it is full of horned red creatures or shady figures with black
   hats. Vertical lines below the cloud represent the information it
-  has access to before outputting a particlar message. This naturally
+  has access to before outputting a particular message. This naturally
   encodes the "arrow of time", differentiating between a process that
   first verifies a signature and then reveals the signing key from one
   that does the opposite.
@@ -28,7 +28,7 @@ the diagrams.
   convention: for mux, the choice of which top input to use comes from
   the side; for functions that have secret and public inputs the
   secret input is on the side.
-- A horisontal dashed line with a o-arrow going into it has the
+- A horizontal dashed line with a o-arrow going into it has the
   following semantics. If the input is true in some execution, the
   graph is executed as if the line wasn't there. If the input is
   false, all values created *below* the dashed line are replaced with
@@ -50,18 +50,18 @@ number of inputs as if there was not an adversary, but these inputs
 are controlled by the adversary.  After the shared key has been
 established, the initiator of this execution proceeds to encrypt a
 message using the shared secret. We will seek to derive that this
-message remains confidencial.
+message remains confidential.
 
 The following convention is used for symbols: capital letters
 represent public keys and corresponding lowercase letters represent
-correspnding secret keys. Furthermore, primed keys are short-term,
-held by the same party that holds the corresponding unprined key.
+corresponding secret keys. Furthermore, primed keys are short-term,
+held by the same party that holds the corresponding unprimed key.
 
 In arrows-and-messages notation, this protocol might be described as follows:
 
-   —> gᵃ
-   <— gᵇ, sig_B(gᵃ, gᵇ)
-   —> E(gᵃᵇ, m)
+        —> gᵃ
+        <— gᵇ, sig_B(gᵃ, gᵇ)
+        —> E(gᵃᵇ, m)
 
 ![](svg/1-receiver-auth.svg){ width=100% }
 
