@@ -73,7 +73,8 @@ circuit format. This would be trivial for a two-worlds-style security definition
 that completely characterizes the behavior of the primitive in question.
 Single-experiment definitions need to be converted to two-worlds style first,
 and then existentially quantified over behavior in the undefined cases.
-For signatures, we get the following computation indistinguishability statement:
+For signatures, we get an indistinguishability statement that relates the
+verification function to the following case-by-case logic:
 if a secret key has been only used for signing, and verify with the
 corresponding public key returns "valid", the message must be one of the ones
 signed with that key.  Of course, if verify returns "invalid", the message from
